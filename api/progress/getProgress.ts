@@ -1,7 +1,7 @@
-import { defaultProgressContext } from 'contexts/ProgressContext'
+import { LessonKey } from 'lib/progress'
 import { get } from 'utils'
 
-export default async function getProgress(): Promise<string> {
+export default async function getProgress(): Promise<LessonKey> {
   try {
     const res = await get({
       url: '/v1/progress',
@@ -11,6 +11,6 @@ export default async function getProgress(): Promise<string> {
     return res.progress
   } catch (errors) {
     console.error(errors)
-    return defaultProgressContext.progress
+    return 'CH1INT1'
   }
 }

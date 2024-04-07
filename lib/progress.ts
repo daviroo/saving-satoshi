@@ -88,7 +88,9 @@ export const keys = [
   'CH7INT3',
   'CH7MPT1',
   'CH7OUT1',
-]
+] as const
+
+export type LessonKey = (typeof keys)[number]
 
 export const keysMeta = {
   CH1INT1: { path: '/chapter-1/intro-1' },
@@ -181,8 +183,8 @@ export const keysMeta = {
 }
 
 export const isLessonUnlocked = (
-  userProgressKey: string,
-  lessonKey: string
+  userProgressKey: LessonKey,
+  lessonKey: LessonKey
 ) => {
   if (!userProgressKey || !lessonKey) {
     return false
@@ -195,8 +197,8 @@ export const isLessonUnlocked = (
 }
 
 export const isLessonCompleted = (
-  userProgressKey: string,
-  lessonKey: string
+  userProgressKey: LessonKey,
+  lessonKey: LessonKey
 ) => {
   if (!userProgressKey || !lessonKey) {
     return false
@@ -218,8 +220,8 @@ export const isLessonCompleted = (
 }
 
 export const isChallengeCompleted = (
-  userProgressKey: string,
-  lessonKey: string
+  userProgressKey: LessonKey,
+  lessonKey: LessonKey
 ) => {
   if (!userProgressKey || !lessonKey) {
     return false
@@ -246,7 +248,7 @@ export const getLastUnlockedLessonPath = (userProgressKey: string): string => {
 }
 
 export const getCurrentLessonKey = (
-  userProgressKey: string,
+  userProgressKey: LessonKey,
   account?: any
 ): string => {
   if (!account) {
@@ -268,7 +270,7 @@ export const getCurrentLessonKey = (
 }
 
 export const getNextLessonKey = (
-  userProgressKey: string,
+  userProgressKey: LessonKey,
   account?: any
 ): string => {
   const id = keys.indexOf(userProgressKey)
@@ -291,12 +293,12 @@ export const getNextLessonKey = (
   }
 }
 
-export const getNextChapterNumber = (userProgressKey: string): number => {
+export const getNextChapterNumber = (userProgressKey: LessonKey): number => {
   const currentLessonNumber = parseInt(userProgressKey.slice(2, 3))
   return currentLessonNumber + 1
 }
 
-export const getNextLessonPath = (userProgressKey: string): string => {
+export const getNextLessonPath = (userProgressKey: LessonKey): string => {
   const id = keys.indexOf(userProgressKey)
   const result = keys[id + 1]
 
@@ -308,7 +310,7 @@ export const getNextLessonPath = (userProgressKey: string): string => {
   return keysMeta[result].path
 }
 
-export const getLessonKey = (chapterId, lessonId) => {
+export const getLessonKey = (chapterId, lessonId: LessonKey) => {
   if (!(chapterId in lessons)) {
     return undefined
   }
@@ -325,7 +327,7 @@ export const getLessonKey = (chapterId, lessonId) => {
   return lesson.metadata.key
 }
 
-export const getChapterKey = (userProgressKey: string): string => {
+export const getChapterKey = (userProgressKey: LessonKey): string => {
   const chapterKey =
     userProgressKey === keys[keys.length - 1]
       ? (parseInt(userProgressKey.substring(2, 3)) + 1).toString()

@@ -1,22 +1,68 @@
-import { StoredLessonData } from 'types'
-import { Base64String } from 'types/classes'
 import { get } from 'utils'
 
-export default async function getData(
-  lessonId
-): Promise<StoredLessonData | undefined> {
+export async function getUserAccount(): Promise<UserAccount> {
   try {
-    const res = await get({
-      url: `/v1/data/${lessonId}`,
+    const response = await get({
+      url: `/v1/data/`,
       includeToken: true,
     })
+    return response as UserAccount
+  } catch (error) {
+    console.error(error)
+    throw new Error('Unable to fetch user account')
+  }
+}
 
-    return {
-      answer: res.data.answer,
-      code: new Base64String(res.data.code, true) as Base64String,
-    }
-  } catch (errors) {
-    console.error(errors)
-    return undefined
+export async function getUserProfile(): Promise<UserProfile> {
+  try {
+    const response = await get({
+      url: `/v1/data/profile`,
+      includeToken: true,
+    })
+    return response as UserProfile
+  } catch (error) {
+    console.error(error)
+    throw new Error('Unable to fetch user profile')
+  }
+}
+
+export async function getAllLessonsProgress(): Promise<Lesson[]> {
+  try {
+    const response = await get({
+      url: `/v1/data/lesson-progress`,
+      includeToken: true,
+    })
+    return response as Lesson[]
+  } catch (error) {
+    console.error(error)
+    throw new Error('Unable to fetch lessons progress')
+  }
+}
+
+export async function getLessonProgress(
+  lessonId: string
+): Promise<Submission[]> {
+  try {
+    const response = await get({
+      url: `/v1/data/lesson-progress/${lessonId}`,
+      includeToken: true,
+    })
+    return response as Submission[]
+  } catch (error) {
+    console.error(error)
+    throw new Error('Unable to fetch lesson progress')
+  }
+}
+
+export async function getCurrentLesson(): Promise<string> {
+  try {
+    const response = await get({
+      url: `/v1/data/current-lesson`,
+      includeToken: true,
+    })
+    return response as string
+  } catch (error) {
+    console.error(error)
+    throw new Error('Unable to fetch current lesson')
   }
 }

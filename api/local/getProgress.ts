@@ -1,6 +1,6 @@
-import { defaultProgressContext } from 'contexts/ProgressContext'
+import { LessonKey } from 'lib/progress'
 
-export default async function getProgressLocal(): Promise<string> {
+export default async function getProgressLocal(): Promise<LessonKey> {
   try {
     const progress = localStorage.getItem('SavingSatoshiProgress')
 
@@ -10,9 +10,9 @@ export default async function getProgressLocal(): Promise<string> {
 
     const res = progress.replace(/['"]/g, '')
 
-    return res
+    return res as LessonKey
   } catch (errors) {
     console.error(errors)
-    return defaultProgressContext.progress
+    return 'CH1INT1'
   }
 }

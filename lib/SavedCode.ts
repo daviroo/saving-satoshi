@@ -1,25 +1,19 @@
-export enum Language {
-  Python,
-  JavaScript,
-  Unknown,
-}
-
 export function detectLanguage(code: string): Language {
   if (
     code.includes('def ') ||
     code.includes('import ') ||
     code.match(/print\(.+\)/)
   ) {
-    return Language.Python
+    return 'python'
   } else if (
     code.includes('function ') ||
     code.includes('const ') ||
     code.includes('let ') ||
     code.match(/console\.log\(.+\)/)
   ) {
-    return Language.JavaScript
+    return 'javascript'
   }
-  return Language.Unknown
+  return 'unknown'
 }
 
 export function organizeJavaScriptRequires(code: string): string {
@@ -64,34 +58,11 @@ export function organizeImports(code: string): string {
   const language = detectLanguage(code)
 
   switch (language) {
-    case Language.JavaScript:
+    case 'javascript':
       return organizeJavaScriptRequires(code)
-    case Language.Python:
+    case 'python':
       return organizePythonImports(code)
     default:
       throw new Error('Unsupported language detected.')
-  }
-}
-
-export function getLanguageString(language: Language): string {
-  switch (language) {
-    case Language.Python:
-      return 'python'
-    case Language.JavaScript:
-      return 'javascript'
-    case Language.Unknown:
-    default:
-      return 'unknown'
-  }
-}
-
-export function getLanguageFromString(languageString: string): Language {
-  switch (languageString.toLowerCase()) {
-    case 'python':
-      return Language.Python
-    case 'javascript':
-      return Language.JavaScript
-    default:
-      return Language.Unknown
   }
 }
